@@ -20,8 +20,6 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import static java.lang.Thread.sleep;
-
 public class AlbumsByArtistActivity extends AppCompatActivity {
 
     public ProgressDialog dialog;
@@ -35,7 +33,6 @@ public class AlbumsByArtistActivity extends AppCompatActivity {
             .build();
 
     JSONPlaceHolderApi jsonPlaceHolderApi = retrofit.create(JSONPlaceHolderApi.class);
-    private static final String TOKEN_PREF_NAME = "savedToken";
 
     private List<Album> myAlbums = new ArrayList<>();
     private AlbumsAdapter myAdapter;
@@ -52,14 +49,11 @@ public class AlbumsByArtistActivity extends AppCompatActivity {
 
         lvAlbumsByArtist = findViewById(R.id.lvAlbumsByArtist);
 
-        lvAlbumsByArtist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Album someAlbum = (Album) myAdapter.getItem(position);
-                Intent intent = new Intent(getApplicationContext(), SongsByAlbumActivity.class);
-                intent.putExtra("albumId", someAlbum.getId());
-                startActivity(intent);
-            }
+        lvAlbumsByArtist.setOnItemClickListener((parent, view, position, id) -> {
+            Album someAlbum = (Album) myAdapter.getItem(position);
+            Intent intent = new Intent(getApplicationContext(), SongsByAlbumActivity.class);
+            intent.putExtra("albumId", someAlbum.getId());
+            startActivity(intent);
         });
     }
 
@@ -83,7 +77,7 @@ public class AlbumsByArtistActivity extends AppCompatActivity {
     }
 
     private void getAlbumsByArtist(int artistId) {
-        Call<List<Album>> albums = jsonPlaceHolderApi.getAlbumsByArtist(getTokenFromPref(), artistId);
+        Call<List<Album>> albums = jsonPlaceHolderApi.getAlbumsByArtist(artistId);
 
         albums.enqueue(new Callback<List<Album>>() {
             @Override
@@ -103,10 +97,5 @@ public class AlbumsByArtistActivity extends AppCompatActivity {
     public void fillListView(List<Album> myAlbums){
         myAdapter = new AlbumsAdapter(myAlbums);
         lvAlbumsByArtist.setAdapter(myAdapter);
-    }
-
-    public String getTokenFromPref(){
-        SharedPreferences sharedPreferences = getSharedPreferences(TOKEN_PREF_NAME, MODE_PRIVATE);
-        return sharedPreferences.getString("token", "token");
     }
 }

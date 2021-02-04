@@ -9,7 +9,7 @@ import java.util.List;
 
 public class ArtistsAdapter extends BaseAdapter {
 
-    private List<Artist> myArtists = null;
+    private List<Artist> myArtists;
 
     public ArtistsAdapter(List<Artist> myArtists) {
         super();

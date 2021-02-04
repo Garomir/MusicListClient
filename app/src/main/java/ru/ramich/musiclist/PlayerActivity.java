@@ -76,8 +76,6 @@ public class PlayerActivity extends AppCompatActivity {
     LineVisualizer lineVisualizer;
     CircleVisualizer circleVisualizer;
 
-    private static final String TOKEN_PREF_NAME = "savedToken";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,9 +113,7 @@ public class PlayerActivity extends AppCompatActivity {
         uri = Uri.parse(url + songId);
         mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         try {
-            Map<String, String> headers = new HashMap<>();
-            headers.put("Authorization", getTokenFromPref());
-            mPlayer.setDataSource(getApplicationContext(), uri, headers);
+            mPlayer.setDataSource(getApplicationContext(), uri);
             mPlayer.prepareAsync();
             seekbar.setMax(mPlayer.getDuration());
         } catch (IllegalArgumentException | IOException e) {
@@ -277,10 +273,5 @@ public class PlayerActivity extends AppCompatActivity {
                 break;
         }
         return true;
-    }
-
-    public String getTokenFromPref(){
-        SharedPreferences sharedPreferences = getSharedPreferences(TOKEN_PREF_NAME, MODE_PRIVATE);
-        return sharedPreferences.getString("token", "token");
     }
 }

@@ -9,7 +9,7 @@ import java.util.List;
 
 public class AlbumsAdapter extends BaseAdapter {
 
-    private List<Album> myAlbums = null;
+    private List<Album> myAlbums;
 
     public AlbumsAdapter(List<Album> myAlbums) {
         super();

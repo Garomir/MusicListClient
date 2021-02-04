@@ -14,7 +14,7 @@ public class Album {
 
     public Album(){}
 
-    public Album(int id, String name, String artist, String src) {
+    public Album(int id, String name) {
         this.id = id;
         this.name = name;
     }

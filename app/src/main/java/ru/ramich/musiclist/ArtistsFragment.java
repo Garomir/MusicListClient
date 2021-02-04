@@ -37,7 +37,6 @@ public class ArtistsFragment extends Fragment {
             .build();
 
     JSONPlaceHolderApi jsonPlaceHolderApi = retrofit.create(JSONPlaceHolderApi.class);
-    private static final String TOKEN_PREF_NAME = "savedToken";
 
     List<Artist> myArtists = new ArrayList<>();
     ArtistsAdapter myAdapter;
@@ -48,14 +47,11 @@ public class ArtistsFragment extends Fragment {
         View view = inflater.inflate(R.layout.artists_fragment, container, false);
 
         lvArtists = view.findViewById(R.id.lvArtists);
-        lvArtists.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Artist artist = (Artist) myAdapter.getItem(position);
-                Intent intent = new Intent(getActivity(), AlbumsByArtistActivity.class);
-                intent.putExtra("artistId", artist.getId());
-                startActivity(intent);
-            }
+        lvArtists.setOnItemClickListener((parent, view1, position, id) -> {
+            Artist artist = (Artist) myAdapter.getItem(position);
+            Intent intent = new Intent(getActivity(), AlbumsByArtistActivity.class);
+            intent.putExtra("artistId", artist.getId());
+            startActivity(intent);
         });
 
         getAllArtists();
@@ -64,7 +60,7 @@ public class ArtistsFragment extends Fragment {
     }
 
     public void getAllArtists(){
-        Call<List<Artist>> notes = jsonPlaceHolderApi.getAllArtists(getTokenFromPref());
+        Call<List<Artist>> notes = jsonPlaceHolderApi.getAllArtists();
 
         notes.enqueue(new Callback<List<Artist>>() {
             @Override
@@ -84,10 +80,5 @@ public class ArtistsFragment extends Fragment {
     public void fillListView(List<Artist> myArtists){
         myAdapter = new ArtistsAdapter(myArtists);
         lvArtists.setAdapter(myAdapter);
-    }
-
-    public String getTokenFromPref(){
-        SharedPreferences sharedPreferences = getContext().getSharedPreferences(TOKEN_PREF_NAME, MODE_PRIVATE);
-        return sharedPreferences.getString("token", "token");
     }
 }

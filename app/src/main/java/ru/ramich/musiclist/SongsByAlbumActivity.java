@@ -46,7 +46,6 @@ public class SongsByAlbumActivity extends AppCompatActivity {
             .build();
 
     JSONPlaceHolderApi jsonPlaceHolderApi = retrofit.create(JSONPlaceHolderApi.class);
-    private static final String TOKEN_PREF_NAME = "savedToken";
 
     private List<Song> mySongs = new ArrayList<>();
     private SongsAdapter myAdapter;
@@ -64,15 +63,12 @@ public class SongsByAlbumActivity extends AppCompatActivity {
         iv = findViewById(R.id.imageView);
         lvSongsByAlbum = findViewById(R.id.lvSongsByAlbum);
 
-        lvSongsByAlbum.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Song someSong = (Song) myAdapter.getItem(position);
-                Intent intent = new Intent(getApplicationContext(), PlayerActivity.class);
-                intent.putExtra("songId", someSong.getId());
-                intent.putExtra("songName", someSong.getName());
-                startActivity(intent);
-            }
+        lvSongsByAlbum.setOnItemClickListener((parent, view, position, id) -> {
+            Song someSong = (Song) myAdapter.getItem(position);
+            Intent intent = new Intent(getApplicationContext(), PlayerActivity.class);
+            intent.putExtra("songId", someSong.getId());
+            intent.putExtra("songName", someSong.getName());
+            startActivity(intent);
         });
     }
 
@@ -98,7 +94,7 @@ public class SongsByAlbumActivity extends AppCompatActivity {
 
     //метод использующий retrofit для загрузки с сервера списка песен по ID альбома
     private void getSongsByAlbum(int albumId) {
-        Call<List<Song>> songs = jsonPlaceHolderApi.getSongsByAlbum(getTokenFromPref(), albumId);
+        Call<List<Song>> songs = jsonPlaceHolderApi.getSongsByAlbum(albumId);
 
         songs.enqueue(new Callback<List<Song>>() {
             @Override
@@ -117,7 +113,7 @@ public class SongsByAlbumActivity extends AppCompatActivity {
 
     //метод использующий retrofit для загрузки с сервера картинки альбома
     private void getImg(int imgId) {
-        Call<ResponseBody> img = jsonPlaceHolderApi.getImg(getTokenFromPref(), imgId);
+        Call<ResponseBody> img = jsonPlaceHolderApi.getImg(imgId);
 
         img.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -138,11 +134,5 @@ public class SongsByAlbumActivity extends AppCompatActivity {
     public void fillListView(List<Song> mySongs){
         myAdapter = new SongsAdapter(mySongs);
         lvSongsByAlbum.setAdapter(myAdapter);
-    }
-
-    //вытаскиваем наш токен("token") из существующего SharedPreferences (TOKEN_PREF_NAME)
-    public String getTokenFromPref(){
-        SharedPreferences sharedPreferences = getSharedPreferences(TOKEN_PREF_NAME, MODE_PRIVATE);
-        return sharedPreferences.getString("token", "token");
     }
 }

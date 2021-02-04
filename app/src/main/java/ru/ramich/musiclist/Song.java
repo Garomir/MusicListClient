@@ -14,7 +14,7 @@ public class Song {
 
     public Song(){}
 
-    public Song(int id, String name, String artist, String src) {
+    public Song(int id, String name) {
         this.id = id;
         this.name = name;
     }

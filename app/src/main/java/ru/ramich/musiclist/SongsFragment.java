@@ -40,7 +40,6 @@ public class SongsFragment extends Fragment {
             .build();
 
     JSONPlaceHolderApi jsonPlaceHolderApi = retrofit.create(JSONPlaceHolderApi.class);
-    private static final String TOKEN_PREF_NAME = "savedToken";
 
     private List<Song> mySongs = new ArrayList<>();
     private SongsAdapter myAdapter;
@@ -54,17 +53,14 @@ public class SongsFragment extends Fragment {
 
         listView = view.findViewById(R.id.lvSongs);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Song someSong = (Song) myAdapter.getItem(position);
-                Intent intent = new Intent(getActivity(), PlayerActivity.class);
-                intent.putExtra("songId", someSong.getId());
-                intent.putExtra("songName", someSong.getName());
-                intent.putIntegerArrayListExtra("listId", listId);
-                intent.putStringArrayListExtra("listName", listName);
-                startActivity(intent);
-            }
+        listView.setOnItemClickListener((parent, view1, position, id) -> {
+            Song someSong = (Song) myAdapter.getItem(position);
+            Intent intent = new Intent(getActivity(), PlayerActivity.class);
+            intent.putExtra("songId", someSong.getId());
+            intent.putExtra("songName", someSong.getName());
+            intent.putIntegerArrayListExtra("listId", listId);
+            intent.putStringArrayListExtra("listName", listName);
+            startActivity(intent);
         });
         return view;
     }
@@ -89,7 +85,7 @@ public class SongsFragment extends Fragment {
     }
 
     private void getAllSongs(){
-        Call<List<Song>> notes = jsonPlaceHolderApi.getAllSongs(getTokenFromPref());
+        Call<List<Song>> notes = jsonPlaceHolderApi.getAllSongs();
 
         notes.enqueue(new Callback<List<Song>>() {
             @Override
@@ -126,10 +122,4 @@ public class SongsFragment extends Fragment {
         }
         return listName;
     }
-
-    public String getTokenFromPref(){
-        SharedPreferences sharedPreferences = getContext().getSharedPreferences(TOKEN_PREF_NAME, MODE_PRIVATE);
-        return sharedPreferences.getString("token", "token");
-    }
-
 }

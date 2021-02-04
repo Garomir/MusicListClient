@@ -13,25 +13,25 @@ import retrofit2.http.Path;
 public interface JSONPlaceHolderApi {
 
     @GET("songs/{id}")
-    public Call<ResponseBody> getSongWithId(@Header("Authorization") String authToken, @Path("id") int id);
+    public Call<ResponseBody> getSongWithId(@Path("id") int id);
 
     @GET("songs")
-    public Call<List<Song>> getAllSongs(@Header("Authorization") String authToken);
+    public Call<List<Song>> getAllSongs();
 
     @GET("artist")
-    public Call<List<Artist>> getAllArtists(@Header("Authorization") String authToken);
+    public Call<List<Artist>> getAllArtists();
 
     @GET("artist/{id}")
     public Call<List<Song>> getSongsByArtist(@Path("id") int id);
 
     @GET("songs/album/{id}")
-    public Call<List<Song>> getSongsByAlbum(@Header("Authorization") String authToken, @Path("id") int id);
+    public Call<List<Song>> getSongsByAlbum(@Path("id") int id);
 
     @GET("albums/{id}")
-    public Call<List<Album>> getAlbumsByArtist(@Header("Authorization") String authToken, @Path("id") int id);
+    public Call<List<Album>> getAlbumsByArtist(@Path("id") int id);
 
     @GET("albums/img/{id}")
-    public Call<ResponseBody> getImg(@Header("Authorization") String authToken, @Path("id") int id);
+    public Call<ResponseBody> getImg(@Path("id") int id);
 
 }
 
