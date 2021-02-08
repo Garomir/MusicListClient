@@ -31,11 +31,7 @@ public class ArtistsFragment extends Fragment {
 
     ListView lvArtists;
 
-    Retrofit retrofit = new  Retrofit.Builder()
-            .baseUrl("http://garomir.hopto.org/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build();
-
+    Retrofit retrofit = MyRetrofit.getRetrofit();
     JSONPlaceHolderApi jsonPlaceHolderApi = retrofit.create(JSONPlaceHolderApi.class);
 
     List<Artist> myArtists = new ArrayList<>();

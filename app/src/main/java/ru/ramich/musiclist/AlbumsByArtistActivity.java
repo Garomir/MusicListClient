@@ -27,11 +27,7 @@ public class AlbumsByArtistActivity extends AppCompatActivity {
     ListView lvAlbumsByArtist;
     int artistId;
 
-    Retrofit retrofit = new  Retrofit.Builder()
-            .baseUrl("http://garomir.hopto.org/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build();
-
+    Retrofit retrofit = MyRetrofit.getRetrofit();
     JSONPlaceHolderApi jsonPlaceHolderApi = retrofit.create(JSONPlaceHolderApi.class);
 
     private List<Album> myAlbums = new ArrayList<>();

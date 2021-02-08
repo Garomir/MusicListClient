@@ -34,11 +34,7 @@ public class SongsFragment extends Fragment {
 
     ListView listView;
 
-    Retrofit retrofit = new  Retrofit.Builder()
-            .baseUrl("http://garomir.hopto.org/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build();
-
+    Retrofit retrofit = MyRetrofit.getRetrofit();
     JSONPlaceHolderApi jsonPlaceHolderApi = retrofit.create(JSONPlaceHolderApi.class);
 
     private List<Song> mySongs = new ArrayList<>();
