@@ -5,8 +5,8 @@ import com.google.gson.annotations.SerializedName;
 
 public class Song {
 
-    @SerializedName("id")
-    @Expose
+    @SerializedName("id")//если имя переменной не совпадает с тем, что в json
+    @Expose//разрешать или запрещать serialize and deserialize данного поля
     private int id;
     @SerializedName("name")
     @Expose
